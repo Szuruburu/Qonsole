@@ -119,7 +119,6 @@
 	SizeConDll := (A_PtrSize==8) ? "SizeCon_x64.dll" : "SizeCon.dll"
 	
 	loadSizeCon() {
-		
 		global SizeConDll
 		global SizeConErrorLevel
 		;SizeConDll := dll
@@ -134,6 +133,7 @@
 		else
 			return 1 ;Success
 	}
+	
 	MsgError(fname:="",arg1:="",arg2:="",arg3:="",arg4:="") {
 		
 		global SizeConDebug

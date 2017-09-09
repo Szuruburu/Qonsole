@@ -11,6 +11,9 @@ backup
 # Temp folder
 temp
 
+# Project folder
+_project
+
 ################ SOM'ORE
 
 # Windows image file caches

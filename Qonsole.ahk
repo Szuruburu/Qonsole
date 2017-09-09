@@ -37,93 +37,44 @@
 		loadSizeCon()
 	}
 	;///////////////////////// [ XP Patch ] /////////////////////////
-	
 	LibConDebug := 1
 	autoexecute_thread :=1
-	configfile:=SubStr(A_ScriptName,1,-4) "_settings.ini"
+	AppName:="Qonsole"
+	Version:="1.45"
+	App_date:="2017-09-09"
+	Update_URL:="http://qonsole-ahk.sourceforge.net/update.ini"
+	Project_URL:="http://qonsole-ahk.sourceforge.net"
+	configfile:= % A_AppData "\Szuruburu\" AppName "\" A_UserName "Settings.ini"
 	Default_CMD_Width:=Round((A_ScreenWidth*0.75)/8)
 	WelcomeFirstTime:=!FileExist(configFile)
 	self_pid:=DllCall("GetCurrentProcessId")
 	lastactive:="ahk_ID " WinExist("A","","ahk_pid " self_pid)
 	CheckUpdate_hide:=0
-	
-;<<<<<<<<  HEADER END  >>>>>>>>>
-
-;###################[ Settings ]#####################
-
-	IniRead,Speed,%configfile%,Animation,Speed,1 ;speed:=1
-	IniRead,Delay,%configfile%,Animation,Delay,20 ;Delay:=20
-	IniRead,dx,%configfile%,Animation,dx,25 ;dx:=25
-		quitOnInActive:=0
-	IniRead,HideOnInActive,%configfile%,Settings,HideOnInActive,0 ;HideOnInActive:=0
-	IniRead,HorizontallyCentered,%configfile%,Settings,HorizontallyCentered,0 ;HorizontallyCentered:=0
-	IniRead,BottomPlaced,%configfile%,Settings,BottomPlaced,0 ;BottomPlaced:=0
-	;IniRead,ShowDebugMenu,%configfile%,Settings,ShowDebugMenu,0 ;ShowDebugMenu:=0
-	IniRead,AnimationDisabled,%configfile%,Animation,AnimationDisabled,0 ;AnimationDisabled:=0
-	IniRead,CmdPaste,%configfile%,Settings,CmdPaste,1 ;CmdPaste:=1
-	IniRead,RunOnStartUp,%configfile%,Settings,RunOnStartUp,0 ;RunOnStartUp:=0
-	IniRead,AutoWinActivate,%configfile%,Settings,AutoWinActivate,1 ;AutoWinActivate:=1
-	IniRead,ReduceMemory,%configfile%,Settings,ReduceMemory,1 ;ReduceMemory:=1
-		chkActiveDelay:=100
-	IniRead,Console_Mode,%configfile%,Settings,Console_Mode,0 ;Console_2_Mode:=0
-	;IniRead,Console_2_Mode,%configfile%,Settings,Console_2_Mode,0 ;Console_2_Mode:=0
-	IniRead,TransparencyPercent,%configfile%,Settings,TransparencyPercent,20 ;TransparencyPercent:=20
-	IniRead,CMD_Path,%configfile%,Settings,CMD_Path,%A_scriptDir%\cmd_Qonsole.lnk ;CMD_Path:="cmd_tcon.lnk" ;%comspec% ;Quotes!!!
-	IniRead,Console_2_path,%configfile%,Settings,Console_2_path,%A_scriptDir%\Console.exe ;Console_2_path:="bin\Console.exe"
-	IniRead,Mintty_path,%configfile%,Settings,Mintty_path,%A_scriptDir%\mintty.exe
-	IniRead,OpenHotkey,%configfile%,Settings,OpenHotkey,#c
-		Hotkey,%OpenHotkey%,OpenHotkey,On
-	IniRead,CMD_Width,%configfile%,Settings,CMD_Width, % (Default_CMD_Width*8)
-	IniRead,CMD_Height,%configfile%,Settings,CMD_Height,266
-	IniRead,CMD_StartUpArgs,%configfile%,Settings,CMD_StartUpArgs,%A_space%
-	IniRead,CMD_offset,%configfile%,Settings,CMD_offset,0
-	IniRead,GuiBGDarken_Increment,%configfile%,Animation,GuiBGDarken_Increment,6
-	
-	;///////////////////////// [ XP Patch ] /////////////////////////
-	if (XPMode)
-		IniRead,GuiBGDarken_Max,%configfile%,Animation,GuiBGDarken_Max,255
-	else
-		IniRead,GuiBGDarken_Max,%configfile%,Animation,GuiBGDarken_Max,128
-	;///////////////////////// [ XP Patch ] /////////////////////////
-	
-	IniRead,GuiBGDarken_Color,%configfile%,Animation,GuiBGDarken_Color,0x1A1A1A
-
-;####################################################
-AppName:="Qonsole"
-Version:="1.4.4"
-App_date:="2017/02/16"
-Update_URL:="http://qonsole-ahk.sourceforge.net/update.ini"
-Project_URL:="http://qonsole-ahk.sourceforge.net"
-
-MsgBox_AlwaysOnTop:=262144
-Console_2_Mode:=InStr(Console_Mode,"Console2")
-Console_Mode:=SubStr(Console_Mode,1,8)
-
-if (GuiBGDarken_Max) ;if not equal zero, then create it
-	gosub Create_GuiBGDarken
+	MsgBox_AlwaysOnTop:=262144
+	Console_2_Mode:=InStr(Console_Mode,"Console2")
+	Console_Mode:=SubStr(Console_Mode,1,8)
 
 if (A_IsCompiled)
-	Menu,tray,Icon,%A_scriptFullPath%,1
+	Menu,Tray,Icon,%A_scriptFullPath%,1
 
 if (!A_IsCompiled || ShowDebugMenu)
-	menu,tray,Standard
+	Menu,Tray,Standard
 else
-	menu,tray,NoStandard
+	Menu,Tray,NoStandard
 
-Menu,tray,Tip,%AppName% v%Version%
-Menu,tray,add,Show/Hide Console,OpenHotkey
-Menu,tray,add,Settings,prog_settings
-Menu,tray,Default,Settings
-Menu,tray,add ;----------------------
-Menu,tray,add,Check for update,Check4Update
-Menu,tray,add,Project Webpage,OpenProjectWebpage
-Menu,tray,add,About,About_prog
-Menu,tray,add ;----------------------
-Menu,tray,add,% "Restart`tShift+Esc",Reload
-Menu, tray, icon,%A_ScriptDir%\icon16.ico
-Menu,tray,add,Quit
-
-Menu, Tray, Click, 1 ;single click instead of double click for default tray icon action
+Menu,Tray,Tip,%AppName% v%Version%
+Menu,Tray,Add,Show/Hide Console,OpenHotkey
+Menu,Tray,Add,Settings,prog_settings
+Menu,Tray,Default,Settings
+Menu,Tray,Add ;----------------------
+Menu,Tray,Add,Check for update,Check4Update
+Menu,Tray,Add,Project Webpage,OpenProjectWebpage
+Menu,Tray,Add,About,About_prog
+Menu,Tray,Add ;----------------------
+Menu,Tray,Add,% "Restart`tShift+Esc",Reload
+Menu,Tray,icon,%A_ScriptDir%\icon16.ico
+Menu,Tray,Add,Quit
+Menu,Tray, Click, 1 ;single click instead of double click for default Tray icon action
 
 ;if (Console_2_Mode)
 ;	con=ahk_class Console_2_Main
@@ -140,6 +91,51 @@ Check4Update_hidden_fail:=1
 GroupAdd,Console_Classes,ahk_class ConsoleWindowClass
 GroupAdd,Console_Classes,ahk_class Console_2_Main
 GroupAdd,Console_Classes,ahk_class mintty
+
+;<<<<<<<<  HEADER END  >>>>>>>>>
+;###################[ Settings ]#####################
+	IniRead,Speed,%configfile%,Animation,iSpeed,1
+	IniRead,Delay,%configfile%,Animation,iDelay,20
+	IniRead,dx,%configfile%,Animation,iDx,25
+		quitOnInActive:=0
+	IniRead,HideOnInActive,%configfile%,Settings,bHideOnInActive,0
+	IniRead,HorizontallyCentered,%configfile%,Settings,bHorizontallyCentered,0
+	IniRead,BottomPlaced,%configfile%,Settings,bBottomPlaced,0
+	;IniRead,ShowDebugMenu,%configfile%,Settings,ShowDebugMenu,0 ;ShowDebugMenu:=0
+	IniRead,AnimationDisabled,%configfile%,Animation,bAnimationDisabled,0
+	IniRead,CmdPaste,%configfile%,Settings,bCmdPaste,1
+	IniRead,RunOnStartUp,%configfile%,Settings,bRunOnStartUp,0
+	IniRead,AutoWinActivate,%configfile%,Settings,bAutoWinActivate,1
+	IniRead,ReduceMemory,%configfile%,Settings,bReduceMemory,1
+		chkActiveDelay:=100
+	IniRead,Console_Mode,%configfile%,Settings,sConsole_Mode,0 ;Console_2_Mode:=0
+	;IniRead,Console_2_Mode,%configfile%,Settings,Console_2_Mode,0 ;Console_2_Mode:=0
+	IniRead,TransparencyPercent,%configfile%,Settings,iTransparencyPercent,20 ;TransparencyPercent:=20
+	IniRead,CMD_Path,%configfile%,Settings,CMD_Path,%A_scriptDir%\cmd_Qonsole.lnk ;CMD_Path:="cmd_tcon.lnk" ;%comspec% ;Quotes!!!
+	IniRead,Console_2_path,%configfile%,Settings,Console_2_path,%A_scriptDir%\Console.exe ;Console_2_path:="bin\Console.exe"
+	IniRead,Mintty_path,%configfile%,Settings,Mintty_path,%A_scriptDir%\mintty.exe
+	IniRead,OpenHotkey,%configfile%,Settings,hOpenHotkey,#c
+		Hotkey,%OpenHotkey%,OpenHotkey,On
+	IniRead,CMD_Width,%configfile%,Settings,iCMD_Width, % (Default_CMD_Width*8)
+	IniRead,CMD_Height,%configfile%,Settings,iCMD_Height,266
+	IniRead,CMD_StartUpArgs,%configfile%,Settings,sCMD_StartUpArgs,%A_space%
+	IniRead,CMD_offset,%configfile%,Settings,iCMD_offset,0
+	IniRead,GuiBGDarken_Increment,%configfile%,Animation,iGuiBGDarken_Increment,6
+	
+	;///////////////////////// [ XP Patch ] /////////////////////////
+	if (XPMode)
+		IniRead,GuiBGDarken_Max,%configfile%,Animation,iGuiBGDarken_Max,255
+	else
+		IniRead,GuiBGDarken_Max,%configfile%,Animation,iGuiBGDarken_Max,128
+	;///////////////////////// [ XP Patch ] /////////////////////////
+	
+	IniRead,GuiBGDarken_Color,%configfile%,Animation,cGuiBGDarken_Color,0x1A1A1A
+
+;####################################################
+
+FileCreateDir, % A_AppData "\Szuruburu\" AppName
+if (GuiBGDarken_Max) ;if not equal zero, then create it
+	gosub Create_GuiBGDarken
 
 if (CmdPaste) {
 	Hotkey, IfWinActive, ahk_group Console_Classes
@@ -168,6 +164,9 @@ OpenProjectWebpage:
 	Run, %Project_URL%
 return
 
+; Init additional modules
+#Include %A_ScriptDir%\data\Blur.ahk
+
 Check4Update:
 	tempupdatefile=%A_temp%\%AppName%_update%A_now%%A_MSec%%A_TickCount%.tmp
 	URLDownloadToFile,%Update_URL%,%tempupdatefile%
@@ -188,7 +187,7 @@ Check4Update:
 			if (CheckUpdate_hide)
 			{
 				Check4Update_hidden_fail:=0
-				menu,tray,Rename,Check for update,Update available...
+				Menu,Tray,Rename,Check for update,Update available...
 				Menu,Tray,Tip,%AppName% v%Version%`nUpdate available...
 			}
 			else
@@ -263,6 +262,7 @@ return
 #IfWinActive
 
 showC:
+	conBG_trans := 120
 	if (!WinExist(con)) {
 		open:=0
 		cShown:=0
@@ -271,9 +271,10 @@ showC:
 	}
 	if (cShown)
 		goto HideC
-	if (!cShown) ;&& (open)
+	if (!cShown) {
 		WinShow,%con%
-	WinActivate,%con%
+	}
+	;WinActivate,%con%
 	if ((!open) or (!WinExist(con))) and (!cPID) {
 		;MsgBox new con - not exist: %con% - o: %open%
 		if (Console_2_Mode) {
@@ -314,22 +315,21 @@ showC:
 			DetectHiddenWindows,On
 			;Sleep 500
 				;doesnt work ;WinSet, Transparent, % (abs(100-TransparencyPercent)/100)*255 , %con%
-				Winset, AlwaysOnTop, On, %con%
-			cmd_height__:=(-xC_height)
-			WinMove,ahk_pid %cPID%,,,%cmd_height__%,%cmd_width%,%xC_height%
-			WinMove,%con%,,,%cmd_height__%,%cmd_width%,%xC_height%
+			Winset, AlwaysOnTop, On, %con%
+			CMD_Height__:=(-xC_height)
+			WinMove,ahk_pid %cPID%,,,%cmd_height__%,%CMD_Width%,%xC_height%
+			WinMove,%con%,,,%cmd_height__%,%CMD_Width%,%xC_height%
 			WinGetPos,,,cw_w,ch,%con%
 			WinGet,hc,ID,%con%
 			con=ahk_id %hc%
 			;WindowDesign(hc)
-				WinSet, Transparent, % (abs(100-TransparencyPercent)/100)*255 , %con%
+			WinSet, Transparent, % (abs(100-TransparencyPercent)/100)*255 , %con%
 				;Winset, AlwaysOnTop, On, %con%
 			cmd_w_fix:=cw_w
 			xC_height-=10
 		} else if (InStr(Console_Mode,"mintty")) {
 			con=ahk_class mintty
-			if (!FileExist(mintty_path))
-			{
+			if (!FileExist(mintty_path)) {
 				MsgBox, 52, Qonsole Error, mintty was not found.`nBrowse For mintty? (mintty.exe)
 				IfMsgBox, Yes
 				{
@@ -337,7 +337,6 @@ showC:
 					IniWrite,%mintty_pathS%,%configFile%,Settings,mintty_path
 					MsgBox, 48, Qonsole Error,The program will now restart.
 					gosub reload
-					
 				}
 				IfMsgBox, No
 				{
@@ -346,14 +345,15 @@ showC:
 					gosub reload
 				}
 			}
+			
 			run,"%mintty_path%" %CMD_StartUpArgs%,,,cPID
 			WinWait,%con%
 			DetectHiddenWindows,Off
 			WinWaitActive,ahk_pid %cPID%
 			WinWaitActive,%con%
 			DetectHiddenWindows,On
-				Winset, AlwaysOnTop, On, %con%
-			cmd_height__:=(-xC_height)
+			Winset, AlwaysOnTop, On, %con%
+			CMD_Height__:=(-xC_height)
 			
 			; hide window border
 			WinSet, Style, -0x40000, %con%
@@ -363,8 +363,8 @@ showC:
 			WinSet, Style, -0x800000, %con%
 			WinSet, Style, -0x400000, %con%
 			
-			WinMove,ahk_pid %cPID%,,,%cmd_height__%,%cmd_width%,% xC_height+0
-			WinMove,%con%,,,%cmd_height__%,%cmd_width%, % xC_height+0
+			WinMove,ahk_pid %cPID%,,,%CMD_Height__%,%CMD_Width%,% xC_height+0
+			WinMove,%con%,,,%CMD_Height__%,%CMD_Width%, % xC_height+0
 			WinGetPos,,,cw_w,ch,%con%
 			WinGet,hc,ID,%con%
 			con=ahk_id %hc%
@@ -375,53 +375,31 @@ showC:
 		} else { ;Cmd mode (Quake mode?? >> Quahke)
 			con=ahk_class ConsoleWindowClass
 			chk_CMD_Path:
-			if (!FileExist(CMD_Path))
-			{
+			if (!FileExist(CMD_Path)) {
 				if (WelcomeFirstTime)
 					MsgBox, 64, Qonsole - Version %Version%, The is no Cmd path currently set.`nQonsole will set it up for you.
 				else
 					MsgBox, 64, Qonsole Error, The Cmd path is Invalid.`nQonsole will set it up for you.
 				/*
-				if (WelcomeFirstTime)
-					MsgBox, 52, Qonsole - Version %Version%, The is no Cmd path currently set.`nLet Qonsole set it up for you?
-				else
-					MsgBox, 52, Qonsole Error, The Cmd path is Invalid.`nLet Qonsole set it up for you?
-				IfMsgBox, Yes
-				{
-				*/
-					CMD_Path=%A_scriptDir%\cmd_Qonsole.lnk
-					FileCreateShortcut,%comspec%,%CMD_Path%
-					IniWrite,%CMD_Path%,%configFile%,Settings,CMD_Path
-					MsgBox, 64, Qonsole - Notice, Qonsole has created a configuration file:`n"%CMD_Path%"
-					goto chk_CMD_Path
-				/*
-				}
-				IfMsgBox, No
-				{
-					MsgBox, 52, Qonsole Error, The Cmd path is Invalid.`nBrowse For Cmd?
+					if (WelcomeFirstTime)
+						MsgBox, 52, Qonsole - Version %Version%, The is no Cmd path currently set.`nLet Qonsole set it up for you?
+					else
+						MsgBox, 52, Qonsole Error, The Cmd path is Invalid.`nLet Qonsole set it up for you?
 					IfMsgBox, Yes
 					{
-						CMD_PathS:=BrowseForConsole("Cmd")
-						IniWrite,%CMD_PathS%,%configFile%,Settings,CMD_Path
-						MsgBox, 48, Qonsole Error,The program will now restart.
-						gosub reload
-					}
-					IfMsgBox, No
-					{
-						MsgBox, 48, Qonsole Error, `%comspec`% Mode will be used.`nThe program will now restart.
-						;IniWrite,0,%configFile%,Settings,Console_2_Mode
-						IniWrite,%comspec%,%configFile%,Settings,CMD_Path
-						gosub reload
-					}
-				}
 				*/
+				CMD_Path=%A_scriptDir%\cmd_Qonsole.lnk
+				FileCreateShortcut,%comspec%,%CMD_Path%
+				IniWrite,%CMD_Path%,%configFile%,Settings,CMD_Path
+				MsgBox, 64, Qonsole - Notice, Qonsole has created a configuration file:`n"%CMD_Path%"
+				goto chk_CMD_Path
 			}
 			run,"%CMD_Path%" %CMD_StartUpArgs%,,,cPID
 			conP=ahk_pid %cPID%
 			WinWait,%conP%,,1
 			conP:=""
 			if (ErrorLevel) or (cPID="")
-			WinGet,cPID,PID,%con%
+				WinGet,cPID,PID,%con%
 			con=ahk_pid %cPID%
 			WinGetPos,,,,ch,%con%
 			offset:=Mod(ch,speed)-ch + speed
@@ -455,16 +433,27 @@ showC:
 			WinGetPos,,,cw_w,ch,%con%
 			ch:=ch+2
 		}
-		lastactive:="ahk_ID " WinExist("A")
+		
+		_tx:=((HorizontallyCentered) ? ((cmd_w_fix<A_ScreenWidth) ? abs((A_ScreenWidth-cmd_w_fix)/2) : 0) : 0) +((Console_2_Mode) ? 0 : -2)
+		_ty:=((BottomPlaced) ? ((xC_height<A_ScreenHeight) ? abs(A_ScreenHeight-xC_height+( (WinTenPlus!=0) ? 16 : 0 )) : 0) : ((Console_2_Mode) ? 0 : -2))
+		
+		Gui, conBG: -SysMenu -Caption +LastFound +ToolWindow
+		hConBG := WinExist()
+		Gui, conBG: Color, 0x000000
+		WinSet, ExStyle, +0x20, ahk_id %hConBG%
+		WinSet, Trans, %conBG_trans%, ahk_id %hConBG%
+		Gui, conBG: Show,% "w" cmd_w_fix + 40 " h" CMD_Height - 5 " x" _tx - 10 " y" _ty "Hide NoActivate"
+		
+		WinShow, ahk_id %hConBG%
+		
+		lastactive:="ahk_ID " WinExist("A")	
 		offset:=Mod(ch,speed)-ch + speed
 		WinSet,AlwaysOnTop,On,ahk_id %hGuiBGDarken%
 		WinActivate,ahk_id %hGuiBGDarken%
 		WinSet,AlwaysOnTop,On,%con%
 		WinActivate,%con%
 		
-		_tx:=((HorizontallyCentered) ? ((cmd_w_fix<A_ScreenWidth) ? abs((A_ScreenWidth-cmd_w_fix)/2) : 0) : 0) +((Console_2_Mode) ? 0 : -2)
-		_ty:=((BottomPlaced) ? ((xC_height<A_ScreenHeight) ? abs(A_ScreenHeight-xC_height+( (WinTenPlus!=0) ? 16 : 0 )) : 0) : ((Console_2_Mode) ? 0 : -2))
-		WinMove,%con%,,_tx, _ty
+		WinMove,%con%,,_tx,_ty
 		
 		;///////////////////////// [ XP Patch ] /////////////////////////
 		if (XPMode) {
@@ -472,7 +461,7 @@ showC:
 			offset:=offset-(__wwzh) ;;?? this line does nothing???
 			
 			;winfade("ahk_id " hGuiBGDarken,GuiBGDarken_Max,GuiBGDarken_Increment) ;fade in
-
+			
 			__wwwwvar:=(Console_2_Mode) ? 0 : -2
 			__wwwwvar:=(__wwwwvar)-(__wwzh)
 			if (BottomPlaced)
@@ -487,10 +476,13 @@ showC:
 				WinSet, Transparent, % (abs(100-TransparencyPercent)/100)*255 , %con%
 			
 			winfade("ahk_id " hGuiBGDarken,GuiBGDarken_Max,GuiBGDarken_Increment) ;fade in
-			if (BottomPlaced)
+			if (BottomPlaced) {
+				WinSlideUpExp("ahk_id " hConBG,Delay,speed,(A_ScreenHeight-xC_height-CMD_offset)+( (WinTenPlus!=0) ? 16 : 0 ),dx)
 				WinSlideUpExp(Con,Delay,speed,(A_ScreenHeight-xC_height-CMD_offset)+( (WinTenPlus!=0) ? 16 : 0 ),dx)
-			else
+			} else {
+				WinSlideDownExp("ahk_id " hConBG,Delay,speed, (0+(Console_2_Mode) ? 0 : (-2+WinTenPlus) )+CMD_offset,dx)
 				WinSlideDownExp(Con,Delay,speed, (0+(Console_2_Mode) ? 0 : (-2+WinTenPlus) )+CMD_offset,dx)
+			}
 			;WinSlideDown(Con,speed,Delay,(0+(Console_2_Mode) ? 0 : -2) )
 		}
 		;///////////////////////// [ XP Patch ] /////////////////////////
@@ -502,14 +494,25 @@ showC:
 		;while(anim) {
 			;do nothing, wait till current animation finishes...
 		;}
+		_tx:=((HorizontallyCentered) ? ((cmd_w_fix<A_ScreenWidth) ? abs((A_ScreenWidth-cmd_w_fix)/2) : 0) : 0) +((Console_2_Mode) ? 0 : -2)
+		_ty:=((BottomPlaced) ? ((xC_height<A_ScreenHeight) ? abs(A_ScreenHeight-xC_height+( (WinTenPlus!=0) ? 16 : 0 )) : 0) : ((Console_2_Mode) ? 0 : -2))
+		
+		Gui, conBG: -SysMenu -Caption +LastFound +ToolWindow +AlwaysOnTop
+		hConBG := WinExist()
+		Gui, conBG: Color, 0x000000
+		WinSet, ExStyle, +0x20
+		WinSet, Trans, %conBG_trans%
+		;WinSet, Trans, 0
+		Gui, conBG: Show, % "w" cmd_w_fix + 40 " h" CMD_Height - 5 " x" _tx - 10 " y" _ty " Hide NoActivate"
+		;winfade("ahk_id " hConBG, conBG_trans, 20)
+		WinShow, ahk_id %hConBG%
+		
 		lastactive:="ahk_ID " WinExist("A")
 		WinSet,AlwaysOnTop,On,ahk_id %hGuiBGDarken%
 		WinActivate,ahk_id %hGuiBGDarken%
 		WinSet,AlwaysOnTop,On,%con%
 		WinActivate,%con%
 		
-		_tx:=((HorizontallyCentered) ? ((cmd_w_fix<A_ScreenWidth) ? abs((A_ScreenWidth-cmd_w_fix)/2) : 0) : 0) +((Console_2_Mode) ? 0 : -2)
-		_ty:=((BottomPlaced) ? ((xC_height<A_ScreenHeight) ? abs(A_ScreenHeight-xC_height+( (WinTenPlus!=0) ? 16 : 0 )) : 0) : ((Console_2_Mode) ? 0 : -2))
 		WinMove,%con%,,_tx, ;_ty
 		
 		;///////////////////////// [ XP Patch ] /////////////////////////
@@ -519,8 +522,9 @@ showC:
 			;winfade("ahk_id " hGuiBGDarken,GuiBGDarken_Max,GuiBGDarken_Increment) ;fade in
 			if (BottomPlaced)
 				WinSlideUpExp(Con,Delay,speed,A_ScreenHeight-xC_height-CMD_offset,dx)
-			else
+			else {
 				WinSlideDownExp(Con,Delay,speed, __wwwwvar+CMD_offset,dx)
+			}
 		}
 		else
 		{
@@ -529,15 +533,13 @@ showC:
 				WinSet, Style, -0x40000, %con%
 			}
 			winfade("ahk_id " hGuiBGDarken,GuiBGDarken_Max,GuiBGDarken_Increment) ;fade in
-			;gosub FadeBG
-			
-			;when qonsole is at the bottom, the action to hide it is the same as to show it when we're at the top, which is to slide it upward
-			if (BottomPlaced)
-			{
+			if (BottomPlaced) {
+				WinSlideUpExp("ahk_id " hConBG,Delay,speed,(A_ScreenHeight-xC_height-CMD_offset)+( (WinTenPlus!=0) ? 16 : 0 ),dx)
 				WinSlideUpExp(Con,Delay,speed,(A_ScreenHeight-xC_height-CMD_offset)+( (WinTenPlus!=0) ? 16 : 0 ),dx)
-			}
-			else
+			} else {
+				WinSlideDownExp("ahk_id " hConBG,Delay,speed, (0+(Console_2_Mode) ? 0 : (-2+WinTenPlus) )+CMD_offset,dx)
 				WinSlideDownExp(Con,Delay,speed, (0+(Console_2_Mode) ? 0 : (-2+WinTenPlus) )+CMD_offset,dx)
+			}
 		}
 		;///////////////////////// [ XP Patch ] /////////////////////////
 	}
@@ -546,34 +548,18 @@ showC:
 return
 
 HideC:
-	if (cShown) {
-		
-		/* completely disabled for now
-		if (AutoWinActivate) {
-			;WinActivate,%lastactive%
-			WinGet, All_WindowList, List, , , %con%
-			WinGet, All_WindowList_Count, Count, , , %con%
-			
-			Loop % All_WindowList_Count
-			{
-				index := A_index+1
-				All_WindowList_id := All_WindowList%index%
-				WinGet, All_WindowList_state, MinMax, ahk_id %All_WindowList_id%
-				if (All_WindowList_state!=-1) {
-					WinActivate, ahk_id %All_WindowList_id%
-					break
-				}
-			}
-		}
-		*/
-		
+	if (cShown) {		
 		;when qonsole is at the bottom, the action to hide it is the same as to show it when we're at the top, which is to slide it upward
-		if (BottomPlaced)
+		if (BottomPlaced) {
+			WinSlideDownExp("ahk_id " hConBG,Delay,speed,A_ScreenHeight,dx)
 			WinSlideDownExp(Con,Delay,speed,A_ScreenHeight,dx)
-		else
+		} else {
 			WinSlideUpExp(Con,Delay,speed,offset,dx)
+			WinSlideUpExp("ahk_id " hConBG,Delay,speed,offset,dx)
+		}
 		;WinSlideUp(Con,speed,Delay,offset)
 		WinHide,%con%
+		WinHide,ahk_id %hConBG%
 		
 		;///////////////////////// [ XP Patch ] /////////////////////////
 		if (XPMode) {
@@ -624,19 +610,27 @@ GuiBGDarkenguiescape:
 GuiBGDarkenguiclose:
 return
 
-winfade(w:="",t:=128,i:=1,d:=10) {
-    w:=(w="")?("ahk_id " WinActive("A")):w
-    t:=(t>255)?255:(t<0)?0:t
-    WinGet,s,Transparent,%w%
-    s:=(s="")?255:s ;prevent trans unset bug
-    WinSet,Transparent,%s%,%w% 
-    i:=(s<t)?abs(i):-1*abs(i)
-    while(k:=(i<0)?(s>t):(s<t)&&WinExist(w)) {
-        WinGet,s,Transparent,%w%
-        s+=i
-        WinSet,Transparent,%s%,%w%
-        sleep %d%
-    }
+winfade(w:="",t:=128,i:=1,d:=10, ex_enable:=false,ex_off:=false) {
+	if (ex_off = false) {
+		WinGet s, ExStyle, %w%
+		WinSet ExStyle, +0x20, %w%
+	}
+	
+	w:=(w="")?("ahk_id " WinActive("A")):w
+	t:=(t>255)?255:(t<0)?0:t
+	WinGet,s,Transparent,%w%
+	s:=(s="")?255:s ;prevent trans unset bug
+	WinSet,Transparent,%s%,%w% 
+	i:=(s<t)?abs(i):-1*abs(i)
+	while(k:=(i<0)?(s>t):(s<t)&&WinExist(w)) {
+		WinGet,s,Transparent,%w%
+		s+=i
+		WinSet,Transparent,%s%,%w%
+		sleep %d%
+	}
+	
+	if (ex_enable = true)
+		WinSet ExStyle, -0x20, %w%
 }
 
 /* exit hotstring handling - No Longer needed.
@@ -913,21 +907,21 @@ GuiSave:
 	GuiSave_btn_clicked:=1
 	if (WinKey)
 		OpenHotkey=#%OpenHotkey%
-	IniWrite,%Uspeed%,%configFile%,Animation,Speed
-	IniWrite,%Udelay%,%configFile%,Animation,Delay
-	IniWrite,%Udx%,%configFile%,Animation,dx
-	IniWrite,%HideOnInActive%,%configFile%,Settings,HideOnInActive
-	IniWrite,%HorizontallyCentered%,%configFile%,Settings,HorizontallyCentered
-	IniWrite,%BottomPlaced%,%configfile%,Settings,BottomPlaced
+	IniWrite,%Uspeed%,%configFile%,Animation,iSpeed
+	IniWrite,%Udelay%,%configFile%,Animation,iDelay
+	IniWrite,%Udx%,%configFile%,Animation,iDx
+	IniWrite,%HideOnInActive%,%configFile%,Settings,bHideOnInActive
+	IniWrite,%HorizontallyCentered%,%configFile%,Settings,bHorizontallyCentered
+	IniWrite,%BottomPlaced%,%configfile%,Settings,bBottomPlaced
 	;IniWrite,%ShowDebugMenu%,%configFile%,Settings,ShowDebugMenu
-	IniWrite,%AnimationDisabled%,%configFile%,Animation,AnimationDisabled
-	IniWrite,%CmdPaste%,%configFile%,Settings,CmdPaste
-	IniWrite,%AutoWinActivate%,%configFile%,Settings,AutoWinActivate
-	IniWrite,%ReduceMemory%,%configFile%,Settings,ReduceMemory
-	IniWrite,%RunOnStartUp%,%configFile%,Settings,RunOnStartUp
+	IniWrite,%AnimationDisabled%,%configFile%,Animation,bAnimationDisabled
+	IniWrite,%CmdPaste%,%configFile%,Settings,bCmdPaste
+	IniWrite,%AutoWinActivate%,%configFile%,Settings,bAutoWinActivate
+	IniWrite,%ReduceMemory%,%configFile%,Settings,bReduceMemory
+	IniWrite,%RunOnStartUp%,%configFile%,Settings,bRunOnStartUp
 	setAutorun(RunOnStartUp)
-	IniWrite,%DDMode%,%configFile%,Settings,Console_Mode
-	IniWrite,%UTransparencyPercent%,%configFile%,Settings,TransparencyPercent
+	IniWrite,%DDMode%,%configFile%,Settings,sConsole_Mode
+	IniWrite,%UTransparencyPercent%,%configFile%,Settings,iTransparencyPercent
 	if (FileExist(CMD_PathS)) {
 		SplitPath,CMD_PathS,,,__cmdExt,__cmdName
 		if __cmdExt = lnk
@@ -944,17 +938,17 @@ GuiSave:
 		IniWrite,%mintty_pathS%,%configFile%,Settings,Mintty_Path
 	if (FileExist(Console_2_pathS))
 		IniWrite,%Console_2_pathS%,%configFile%,Settings,Console_2_path
-	IniWrite,%OpenHotkey%,%configFile%,Settings,OpenHotkey
-	IniWrite,%UCMD_Width%,%configFile%,Settings,CMD_Width
-	IniWrite,%UCMD_Height%,%configFile%,Settings,CMD_Height
-	IniWrite,%CMD_StartUpArgs%,%configFile%,Settings,CMD_StartUpArgs
-	IniWrite,%UCMD_offset%,%configFile%,Settings,CMD_offset
-	IniWrite,%UGuiBGDarken_Increment%,%configFile%,Animation,GuiBGDarken_Increment
+	IniWrite,%OpenHotkey%,%configFile%,Settings,hOpenHotkey
+	IniWrite,%UCMD_Width%,%configFile%,Settings,iCMD_Width
+	IniWrite,%UCMD_Height%,%configFile%,Settings,iCMD_Height
+	IniWrite,%CMD_StartUpArgs%,%configFile%,Settings,sCMD_StartUpArgs
+	IniWrite,%UCMD_offset%,%configFile%,Settings,iCMD_offset
+	IniWrite,%UGuiBGDarken_Increment%,%configFile%,Animation,iGuiBGDarken_Increment
 	UGuiBGDarken_Max:=abs(255-Round((UGuiBGDarken_Max/100)*255))
-	IniWrite,%UGuiBGDarken_Max%,%configFile%,Animation,GuiBGDarken_Max
+	IniWrite,%UGuiBGDarken_Max%,%configFile%,Animation,iGuiBGDarken_Max
 	GuiControlGet,GUISetting_color_v,,UGuiBGDarken_Color
 	GUISetting_color_v:="0x" SubStr(strupper(RegExReplace(GUISetting_color_v,"0x")),1,6)
-	IniWrite,%GUISetting_color_v%,%configFile%,Animation,GuiBGDarken_Color
+	IniWrite,%GUISetting_color_v%,%configFile%,Animation,cGuiBGDarken_Color
 	
 	gosub, GuiClose
 	;if (show_settings_btn_clicked||GuiSave_btn_clicked)
@@ -988,24 +982,33 @@ BrowseForConsole(name) {
 About_prog:
 if (!About_prog)
 {
-	gui, About_prog: +ToolWindow -Caption +AlwaysOnTop +hwndhAboutGUI
-	Gui, About_prog:Color, 333333
+	logoD := 150
+	logoM := 5
+	aboutW := logoM*2 + logoD + 200
+	aboutH := (logoM*3)/2 + logoM + logoD
+	; 0x40000 = no resize
+	Gui, About_prog: +ToolWindow +LastFound +AlwaysOnTop -0x40000
+	hAboutGUI := WinExist()
+	WinSet, Transparent, 0
+	WinSet, ExStyle,+0x20
+	Gui, About_prog:Color, 232323
 	if (A_IsCompiled)
-		Gui, About_prog:Add, Picture, x2 y2 w48 h48 Icon1, %A_ScriptFullPath%
+		Gui, About_prog:Add, Picture, % "x" logoM " y" logoM " w" logoD " h" logoD " +BackgroundTrans", %A_ScriptFullPath%
 	else
-		Gui, About_prog:Add, Picture, x2 y2 w48 h48 Icon1, %A_scriptDir%\logo\Qonsole_sm.ico
-	Gui, About_prog:font, s16 c00FF00, Sans Serif
-	Gui, About_prog:font, s16 c00FF00, Segoe UI Light
-	Gui, About_prog:Add, Text, x+2 yp+4, Qonsole
+		Gui, About_prog: Add, Picture, % "x" logoM " y" (logoM*3)/2 " w" logoD " h" logoD " +BackgroundTrans", %A_scriptDir%\logo\logo162.png
+	Gui, About_prog:font, s16 c7cbd6b, Sans Serif
+	Gui, About_prog:font, s16 c7cbd6b, Segoe UI Light
+	Gui, About_prog:Add, Text, x+10 yp+10, Qonsole
 	Gui, About_prog:font, s8, Segoe UI
-	Gui, About_prog:Add, Text, xp+2 y+4, Version %Version% (%App_date%)`nBy Joe DF
-	Gui, About_prog:Add, Text, xp yp+30, Proudly under the MIT License
-	Gui, About_prog:Show, w218 h92, About %appname%
+	Gui, About_prog:Add, Text, xp+10 y+10, % "Version " Version " (" App_date ")`nBy Joe DF and Szuruburu"
+	Gui, About_prog:Add, Text, xp yp+60, Proudly under the MIT License
+	Gui, About_prog:Show, % "w" aboutW " h" aboutH, % "About " AppName
+	winfade("ahk_id " hAboutGUI,255,10,true,true)
 	enableGuiDrag("About_prog")
 	About_prog:=1
 	;WinWaitNotActive, About %appname%
-	WinWaitNotActive, ahk_id %hAboutGUI%
-	goto About_progGuiClose
+	;WinWaitNotActive, ahk_id %hAboutGUI%
+	;goto About_progGuiClose
 }
 else
 {
@@ -1015,6 +1018,7 @@ return
 
 About_progGuiEscape:
 About_progGuiClose:
+	winfade("ahk_id " hAboutGUI,0,20)
 	gui, About_prog:Destroy
 	About_prog:=0
 return
@@ -1212,7 +1216,7 @@ WindowDesign(WindowHWND) {
 	WinGetPos,,,,winFH,ahk_id %windowHWND%
 	global CMD_Height
 	SysGet,tbarH,4
-	sysget,winBH,31
+	SysGet,winBH,31
 	dlines:=ceil(((winFH-tbarH)-winBH)/fh)
 	x:=0 + 2 ;(Console_2_Mode) ? 0 : 2
 	y:=0 + 2 ;(Console_2_Mode) ? 0 : 2
@@ -1232,10 +1236,8 @@ WindowDesign(WindowHWND) {
 		wwh:=(w_height-32)-6 ;(w_height-32)-4 ;(RectY)+fh
 		WinSet, Region, %wwx%-%wwy% w%www% h%wwh%, ahk_id %WindowHWND%
 		;msgbox % errorlevel "   ??????????"
-		winmove,ahk_id %WindowHWND%,,%xxx%,%yyy%
-	}
-	else
-	{
+		WinMove,ahk_id %WindowHWND%,,%xxx%,%yyy%
+	} else {
 		if A_OSVersion in WIN_7,WIN_8,WIN_8.1,WIN_VISTA
 			WinSet, Region, %x%-%y% w%RectX% h%RectY%, ahk_id %WindowHWND%
 		else
@@ -1243,15 +1245,16 @@ WindowDesign(WindowHWND) {
 			global WinTenPlus
 			RectX += WinTenPlus
 			RectY += WinTenPlus
-			if ((winFH-RectY)<39) or ((CMD_Height-RectY)<16){
+			if ((winFH-RectY)<39) or ((CMD_Height-RectY)<16) {
 				RectY += (fh*3)
 			}
+			
 			WinSet, Region, 0-0 w%RectX% h%RectY%, ahk_id %WindowHWND%
 		}
 	}
 	;///////////////////////// [ XP Patch ] /////////////////////////
 	
-	winset,Redraw,, ahk_id %WindowHWND%
+	WinSet,Redraw,, ahk_id %WindowHWND%
 }
 
 ;Modern-like Exponential Movement - inspired from Quahke
@@ -1344,9 +1347,9 @@ getStdoutHandle() {
 setAutorun(query) {
 	global AppName
 	if (query) {
-	FileCreateShortcut,"%A_ScriptFullPath%",%A_Startup%\%AppName%.lnk,%A_WorkingDir%
+		FileCreateShortcut,"%A_ScriptFullPath%",%A_Startup%\%AppName%.lnk,%A_WorkingDir%
 	} else {
-	FileDelete, %A_Startup%\%AppName%.lnk
+		FileDelete, %A_Startup%\%AppName%.lnk
 	}
 }
 
