@@ -111,16 +111,17 @@ else
 	menu,tray,NoStandard
 
 Menu,tray,Tip,%AppName% v%Version%
-menu,tray,add,Show/Hide Console,OpenHotkey
-menu,tray,Default,Show/Hide Console
-menu,tray,add,Settings,prog_settings
-menu,tray,add ;----------------------
-menu,tray,add,Check for update,Check4Update
-menu,tray,add,Project Webpage,OpenProjectWebpage
-menu,tray,add,About,About_prog
-menu,tray,add ;----------------------
-menu,tray,add,Reload
-menu,tray,add,Quit
+Menu,tray,add,Show/Hide Console,OpenHotkey
+Menu,tray,add,Settings,prog_settings
+Menu,tray,Default,Settings
+Menu,tray,add ;----------------------
+Menu,tray,add,Check for update,Check4Update
+Menu,tray,add,Project Webpage,OpenProjectWebpage
+Menu,tray,add,About,About_prog
+Menu,tray,add ;----------------------
+Menu,tray,add,% "Restart`tShift+Esc",Reload
+Menu, tray, icon,%A_ScriptDir%\icon16.ico
+Menu,tray,add,Quit
 
 Menu, Tray, Click, 1 ;single click instead of double click for default tray icon action
 
@@ -145,6 +146,8 @@ if (CmdPaste) {
 	Hotkey,^v,PasteHotkey
 	Hotkey, IfWinActive
 }
+
+Hotkey, +Esc, Reload
 
 if (WelcomeFirstTime) {
 	gosub About_prog
