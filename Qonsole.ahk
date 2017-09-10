@@ -503,7 +503,7 @@ showC:
 		WinSet, ExStyle, +0x20
 		WinSet, Trans, %conBG_trans%
 		;WinSet, Trans, 0
-		Gui, conBG: Show, % "w" cmd_w_fix + 40 " h" CMD_Height - 5 " x" _tx - 10 " y" _ty " Hide NoActivate"
+		Gui, conBG: Show, % "w" cmd_w_fix + 44 " h" CMD_Height - 5 " x" _tx - 13 " y" _ty " Hide NoActivate"
 		;winfade("ahk_id " hConBG, conBG_trans, 20)
 		WinShow, ahk_id %hConBG%
 		
