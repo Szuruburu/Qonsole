@@ -71,7 +71,7 @@ Menu,Tray,Add,Check for update,Check4Update
 Menu,Tray,Add,Project Webpage,OpenProjectWebpage
 Menu,Tray,Add,About,About_prog
 Menu,Tray,Add ;----------------------
-Menu,Tray,Add,% "Restart`tShift+Esc",Reload
+;Menu,Tray,Add,% "Restart`tShift+Esc",Reload
 Menu,Tray,icon,%A_ScriptDir%\icon16.ico
 Menu,Tray,Add,Quit
 Menu,Tray, Click, 1 ;single click instead of double click for default Tray icon action
@@ -143,7 +143,7 @@ if (CmdPaste) {
 	Hotkey, IfWinActive
 }
 
-Hotkey, +Esc, Reload
+;Hotkey, +Esc, Reload
 
 if (WelcomeFirstTime) {
 	gosub About_prog
@@ -287,14 +287,14 @@ showC:
 					Console_2_pathS:=BrowseForConsole("Console2")
 					IniWrite,%Console_2_pathS%,%configFile%,Settings,Console_2_path
 					MsgBox, 48, Qonsole Error,The program will now restart.
-					gosub reload
+					;gosub reload
 					
 				}
 				IfMsgBox, No
 				{
 					MsgBox, 48, Qonsole Error, Cmd Mode will be used.`nThe program will now restart.
 					IniWrite,0,%configFile%,Settings,Console_Mode
-					gosub reload
+					;gosub reload
 				}
 			}
 			chk_console_setupfile:
@@ -336,13 +336,13 @@ showC:
 					mintty_pathS:=BrowseForConsole("mintty")
 					IniWrite,%mintty_pathS%,%configFile%,Settings,mintty_path
 					MsgBox, 48, Qonsole Error,The program will now restart.
-					gosub reload
+					;gosub reload
 				}
 				IfMsgBox, No
 				{
 					MsgBox, 48, Qonsole Error, Cmd Mode will be used.`nThe program will now restart.
 					IniWrite,0,%configFile%,Settings,Console_Mode
-					gosub reload
+					;gosub reload
 				}
 			}
 			
@@ -509,7 +509,7 @@ showC:
 		
 		lastactive:="ahk_ID " WinExist("A")
 		WinSet,AlwaysOnTop,On,ahk_id %hGuiBGDarken%
-		WinActivate,ahk_id %hGuiBGDarken%
+		;WinActivate,ahk_id %hGuiBGDarken%
 		WinSet,AlwaysOnTop,On,%con%
 		WinActivate,%con%
 		
@@ -683,9 +683,9 @@ CloseC:
 	SetTimer,cleanself,-1
 return
 
-Reload:
+;Reload:
 	gosub, CloseC
-	Reload
+	;Reload
 return
 
 Quit:
@@ -954,7 +954,7 @@ GuiSave:
 	;if (show_settings_btn_clicked||GuiSave_btn_clicked)
 	MsgBox, % (68+MsgBox_AlwaysOnTop), %appname% Settings, A restart is needed to appropriately apply the new settings.`n`tWould you like to restart the program now?
 	IfMsgBox, Yes
-		gosub Reload
+		;gosub Reload
 return
 
 GuiClose:
